@@ -2,6 +2,7 @@
   "extends": ["next/core-web-vitals", "./node_modules/standard/eslintrc.json"],
   "rules": {
     "no-unused-vars": "warn",
-    "space-before-function-paren": "off"
+    "space-before-function-paren": "off",
+    "@next/next/no-img-element": "off"
   }
 }

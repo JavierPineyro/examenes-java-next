@@ -1,7 +1,9 @@
-function DashboardPage() {
+import ListOfCardsServer from '@/components/Cards/list-of-cards-server'
+
+export default function DashboardPage() {
   return (
-    <div>DashboardPage</div>
+    <>
+      <ListOfCardsServer />
+    </>
   )
 }
-
-export default DashboardPage

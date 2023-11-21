@@ -10,12 +10,14 @@ export const metadata = {
   description: 'Examenes para practicar sobre distintos temas, Registrate!'
 }
 
-export default function RootLayout ({ children }) {
+export default function RootLayout({ children }) {
   return (
     <html lang='es'>
       <body className={`${monserrat.className} antialiased`}>
         <Providers>
-          {children}
+          <div className='w-full h-screen max-h-screen'>
+            {children}
+          </div>
         </Providers>
       </body>
     </html>
