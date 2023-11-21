@@ -12,5 +12,16 @@ export const api = {
     })
 
     return res
+  },
+  category: {
+    getAll: async ({ token }) => {
+      return fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/categorias`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${'token'}`
+        }
+      })
+    }
   }
 }
