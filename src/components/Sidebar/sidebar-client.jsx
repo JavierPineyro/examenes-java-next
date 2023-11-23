@@ -9,10 +9,10 @@ export default function SidevarClient() {
     <Sidebar aria-label='Sidebar with logo branding example'>
       <Sidebar.Items>
         <Sidebar.ItemGroup>
-          <Sidebar.Item href='#' icon={HiChartPie}>
+          <Sidebar.Item href='/dashboard' icon={HiChartPie}>
             Inicio
           </Sidebar.Item>
-          <Sidebar.Item href='#' icon={HiViewBoards}>
+          <Sidebar.Item href='/dashboard/categoria' icon={HiViewBoards}>
             Categorias
           </Sidebar.Item>
           <Sidebar.Item href='#' icon={HiInbox}>

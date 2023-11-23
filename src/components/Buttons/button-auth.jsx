@@ -9,10 +9,6 @@ export default function ButtonAuth() {
   const { data: session, status } = useSession()
   const isLoading = status === 'loading'
 
-  console.log('----------------------')
-  console.log({ session, status })
-  console.log('----------------------')
-
   if (status === 'loading') {
     return <SpinnerNavbar />
   }

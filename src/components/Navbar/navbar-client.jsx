@@ -1,14 +1,11 @@
 'use client'
 
 import { Avatar, Dropdown, Navbar } from 'flowbite-react'
-import { useSession, signIn, signOut } from 'next-auth/react'
+import { useSession, signOut } from 'next-auth/react'
 import SpinnerNavbar from './navbar-spinner'
 
 export default function NavbarClient() {
   const { data: session, status } = useSession()
-  console.log('----------------------')
-  console.log({ session, status })
-  console.log('----------------------')
 
   return (
     <Navbar fluid rounded>

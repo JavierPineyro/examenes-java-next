@@ -15,13 +15,18 @@ export const api = {
   },
   category: {
     getAll: async ({ token }) => {
-      return fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/categorias`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categoria/`, {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${'token'}`
+          Authorization: `Bearer ${token}`
         }
       })
+      if (!res.ok) {
+        console.log('tokeeeeeeeeeen', token)
+        throw new Error(`Something went wrong, status -> ${res.statusText}`)
+      }
+      const data = await res.json()
+      return data
     }
   }
 }
