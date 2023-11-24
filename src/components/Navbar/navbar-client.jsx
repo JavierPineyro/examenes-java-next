@@ -8,7 +8,7 @@ export default function NavbarClient() {
   const { data: session, status } = useSession()
 
   return (
-    <Navbar fluid rounded>
+    <Navbar className='sticky' fluid rounded>
       <Navbar.Brand href='/'>
         <span className='self-center whitespace-nowrap text-xl font-semibold dark:text-white'>Programación 2</span>
       </Navbar.Brand>

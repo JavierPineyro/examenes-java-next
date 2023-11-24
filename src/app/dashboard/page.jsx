@@ -3,15 +3,16 @@ import CategorySection from '@/components/Category/category-section'
 import ListOfExamns from '@/components/Cards/list-of-examns'
 import Title from '@/components/Title/title'
 import { Suspense } from 'react'
+import Main from '@/components/Container/main'
 
 export default function DashboardPage() {
   return (
-    <main className='w-full flex flex-col gap-4'>
-      <section className='w-full p-2'>
+    <Main className='flex flex-col gap-4'>
+      <section className='w-full'>
         <Title>Categorias</Title>
         <section className='w-full'>
           <Suspense fallback={<CardSkeleton />}>
-            <CategorySection />
+            <CategorySection pathname='dashboard' />
           </Suspense>
         </section>
       </section>
@@ -23,6 +24,6 @@ export default function DashboardPage() {
           </Suspense>
         </section>
       </section>
-    </main>
+    </Main>
   )
 }
