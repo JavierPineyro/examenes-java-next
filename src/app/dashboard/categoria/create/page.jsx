@@ -2,7 +2,7 @@ import Main from '@/components/Container/main'
 import CreateCategoryForm from '@/components/Forms/create-category-form'
 import Breadcrumb from '@/components/Title/breadcrumb-title'
 
-export default function Page({ searchParams }) {
+export default function CategoryCreatePage({ searchParams }) {
   const errorMessage = searchParams?.errormessage || ''
   return (
     <Main className=''>

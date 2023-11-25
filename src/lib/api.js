@@ -41,9 +41,6 @@ export const api = {
       return data
     },
     create: async ({ token, title, description }) => {
-      console.log('token', token)
-      console.log('title', title)
-      console.log('description', description)
       const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categoria/`, {
         method: 'POST',
         headers: {
@@ -57,6 +54,19 @@ export const api = {
       })
       if (!res.ok) {
         throw new Error(`Something went wrong creating category, status -> ${res.statusText}`)
+      }
+      const data = await res.json()
+      return data
+    },
+    getById: async ({ token, id }) => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categoria/${id}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      if (!res.ok) {
+        throw new Error(`Something went wrong getting category by ID:${id}, status -> ${res.statusText}`)
       }
       const data = await res.json()
       return data

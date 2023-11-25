@@ -4,3 +4,8 @@ export const parseRoles = (roles) => {
   const rolesJson = JSON.parse(rolesText)
   return rolesJson.authority
 }
+
+export const ROL = {
+  ADMIN: 'ROLE_ADMIN',
+  USER: 'ROL_USER'
+}

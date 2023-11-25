@@ -4,7 +4,7 @@ import { Sidebar } from 'flowbite-react'
 import { HiArrowSmRight, HiChartPie, HiInbox, HiUser, HiViewBoards } from 'react-icons/hi'
 import { signOut } from 'next-auth/react'
 
-export default function SidevarClient() {
+export default function SidebarClient() {
   return (
     <Sidebar aria-label='Sidebar with logo branding example'>
       <Sidebar.Items>

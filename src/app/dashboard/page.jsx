@@ -1,6 +1,6 @@
 import CardSkeleton from '@/components/Cards/card-skeleton'
 import CategorySection from '@/components/Category/category-section'
-import ListOfExamns from '@/components/Cards/list-of-examns'
+import ListOfExamns from '@/components/Exams/list-of-examns'
 import Title from '@/components/Title/title'
 import { Suspense } from 'react'
 import Main from '@/components/Container/main'

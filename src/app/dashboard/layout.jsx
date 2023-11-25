@@ -1,5 +1,5 @@
 import NavbarClient from '@/components/Navbar/navbar-client'
-import SidevarClient from '@/components/Sidebar/sidebar-client'
+import SidebarClient from '@/components/Sidebar/sidebar-client'
 
 export default function Layout({ children }) {
   return (
@@ -7,8 +7,8 @@ export default function Layout({ children }) {
       <header>
         <NavbarClient />
       </header>
-      <div className='flex'>
-        <SidevarClient />
+      <div className='flex overflow-hidden'>
+        <SidebarClient />
         {children}
       </div>
     </div>

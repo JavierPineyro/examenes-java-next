@@ -8,7 +8,7 @@ export default function NavbarClient() {
   const { data: session, status } = useSession()
 
   return (
-    <Navbar className='sticky' fluid rounded>
+    <Navbar fluid rounded>
       <Navbar.Brand href='/'>
         <span className='self-center whitespace-nowrap text-xl font-semibold dark:text-white'>Programación 2</span>
       </Navbar.Brand>
@@ -29,6 +29,7 @@ function AvatarDropdown({ roles, username }) {
   return (
     <>
       <Dropdown
+        className='z-20'
         arrowIcon={false}
         inline
         label={
@@ -42,7 +43,11 @@ function AvatarDropdown({ roles, username }) {
         <Dropdown.Item>Dashboard</Dropdown.Item>
         <Dropdown.Item>Settings</Dropdown.Item>
         <Dropdown.Divider />
-        <Dropdown.Item onClick={() => signOut()}>Cerrar sesión</Dropdown.Item>
+        <Dropdown.Item onClick={() => signOut({
+          callbackUrl: '/'
+        })}
+        >Cerrar sesión
+        </Dropdown.Item>
       </Dropdown>
       <Navbar.Toggle />
     </>
