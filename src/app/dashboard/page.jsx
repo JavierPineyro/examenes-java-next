@@ -19,9 +19,9 @@ export default function DashboardPage() {
       <section>
         <Title>Examenes</Title>
         <section className='w-full'>
-          <Suspense fallback={<CardSkeleton />}>
+          {/* <Suspense fallback={<CardSkeleton />}>
             <ListOfExamns />
-          </Suspense>
+          </Suspense> */}
         </section>
       </section>
     </Main>

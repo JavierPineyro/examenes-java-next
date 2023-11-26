@@ -70,6 +70,50 @@ export const api = {
       }
       const data = await res.json()
       return data
+    },
+    delete: async ({ token, id }) => {
+      let isOk = false
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categoria/${id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      if (!res.ok) {
+        throw new Error(`Something went wrong deleting category by ID:${id}, status -> ${res.statusText}`)
+      } else {
+        isOk = true
+      }
+
+      return isOk
+    }
+  },
+  exam: {
+    getExamnsByCategoryId: async ({ token, id }) => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/examen/categoria/${id}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      if (!res.ok) {
+        throw new Error(`Something went wrong getting examens of category by ID:${id}, status -> ${res.statusText}`)
+      }
+      const data = await res.json()
+      return data
+    },
+    getExamnsByCategoryIdAndActive: async ({ token, id }) => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/examen/categoria/activos/${id}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      if (!res.ok) {
+        throw new Error(`Something went wrong getting enabled examens of category by ID:${id}, status -> ${res.statusText}`)
+      }
+      const data = await res.json()
+      return data
     }
   }
 }

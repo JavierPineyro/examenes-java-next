@@ -22,9 +22,20 @@ export async function createCategory(formData) {
   const res = await api.category.create({ token, title, description })
 
   if (!res || res == null) {
-    redirect('/dashboard/categoria/create?errormessage=No se pudo crear la categoria, intentelo de nuevo mas tarde')
+    redirect('/dashboard/categoria/create?message=No se pudo crear la categoria, intentelo de nuevo mas tarde&error=true')
   } else {
     revalidatePath('/dashboard/categoria')
-    redirect('/dashboard/categoria')
+    redirect(`/dashboard/categoria?message=La categoria ${title} se ha creado correctamente`)
+  }
+}
+
+export async function deleteCategory({ token, id }, formData) {
+  // usar try catch aca asi no tengo que usar el IF y lo hago en el catch
+  const status = await api.category.delete({ token, id })
+  if (status === false) {
+    redirect(`/dashboard/categoria/${id}?message=No se pudo eliminar la categoria, intentelo de nuevo mas tarde&error=true`)
+  } else {
+    revalidatePath('/dashboard/categoria')
+    redirect('/dashboard/categoria?message=Elemento fue eliminado correctamente')
   }
 }

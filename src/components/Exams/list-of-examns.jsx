@@ -2,16 +2,17 @@ import Card from '@/components/Cards/card'
 import { options } from '@/app/api/auth/[...nextauth]/options'
 import { getServerSession } from 'next-auth'
 import { ROL } from '@/lib/utils'
+import { api } from '@/lib/api'
 
 export default async function ListOfExamns({ categoryId }) {
   const session = await getServerSession(options)
   const { token, roles } = session?.user
-  const exams = []
+  let exams = []
 
   if (roles === ROL.ADMIN) {
-    // exams = await api.examen.getExamsByCategoryId({token, categoryId})
+    exams = await api.exam.getExamnsByCategoryId({ token, id: categoryId })
   } else {
-    // exams = await api.examen.getEnabledExamsByCategoryId({token, categoryId})
+    exams = await api.exam.getExamnsByCategoryIdAndActive({ token, id: categoryId })
   }
 
   return (
