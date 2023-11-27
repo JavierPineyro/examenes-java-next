@@ -30,11 +30,17 @@ export default function ButtonAuth() {
   return (
     <>
       <button
-        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+        className='bg-blue-500 inline-flex hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
         onClick={() => signIn()}
       >
         Iniciar sesión
       </button>
+      <Link
+        href='/register'
+        className='bg-green-400 inline-flex hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+      >
+        Registrarse
+      </Link>
 
     </>
   )
