@@ -1,20 +1,22 @@
-import { deleteCategory } from '@/lib/actions'
+import { deleteCategory, updateCategory } from '@/lib/actions'
 import { ROL } from '@/lib/utils'
 import ModalDelete from '../Modal/delete-modal'
+import { api } from '@/lib/api'
+import ModalUpdate from '../Modal/update-modal'
 
-export default function ActionButtons({ role, token, categoryId }) {
+export default async function ActionButtons({ role, token, categoryId }) {
   const deleteCategoryWithId = deleteCategory.bind(null, { id: categoryId, token })
+  const updateCategoryWithId = updateCategory.bind(null, { id: categoryId, token })
 
-  // <form action={deleteCategoryWithId}>
-  //   <button type='submit' className='px-2 w-40 py-3 rounded-md text-center bg-red-400'>Eliminar</button>
-  // </form>
+  const category = await api.category.getById({ token, id: categoryId })
+
   return (
     <>
       {
         role === ROL.ADMIN && (
           <>
             <ModalDelete deleteAction={deleteCategoryWithId} />
-            <button type='submit' className='px-2 w-40 py-3 rounded-md text-center bg-amber-600'>Editar</button>
+            <ModalUpdate updateAction={updateCategoryWithId} category={category} />
           </>
         )
       }

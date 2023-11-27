@@ -111,6 +111,26 @@ export const api = {
       }
 
       return isOk
+    },
+    update: async ({ token, id, title, description }) => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categoria/`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id,
+          titulo: title,
+          descripcion: description
+        })
+      })
+
+      if (!res.ok) {
+        throw new Error(`Something went wrong updating category by ID:${id}, status -> ${res.statusText}`)
+      }
+      const data = await res.json()
+      return data
     }
   },
   exam: {

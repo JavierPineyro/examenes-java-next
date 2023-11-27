@@ -11,6 +11,7 @@ const createCategorySchema = z.object({
   description: z.string().min(1, 'La descripcion es requerida'),
   token: z.string()
 })
+const updateCategorySchema = createCategorySchema.omit({ token: true })
 const createRegisterSchema = z.object({
   username: z.string().min(1, 'El nombre de usuario es requerido'),
   email: z.string().email('El email no es valido'),
@@ -45,6 +46,21 @@ export async function deleteCategory({ token, id }, formData) {
   } else {
     revalidatePath('/dashboard/categoria')
     redirect('/dashboard/categoria?message=Elemento fue eliminado correctamente')
+  }
+}
+
+export async function updateCategory({ token, id }, formData) {
+  const { title, description } = updateCategorySchema.parse({
+    title: formData.get('titulo'),
+    description: formData.get('descripcion')
+  })
+
+  const data = await api.category.update({ token, id, title, description })
+  if (!data) {
+    redirect(`/dashboard/categoria/${id}?message=No se pudo actualizar la categoria, intentelo de nuevo mas tarde&error=true`)
+  } else {
+    revalidatePath('/dashboard/categoria')
+    redirect(`/dashboard/categoria/${id}?message=La categoria ${title} se ha actualizado correctamente`)
   }
 }
 
