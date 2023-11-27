@@ -17,7 +17,7 @@ export default function ModalUpdate({ updateAction, category }) {
 
   return (
     <>
-      <Button color='purple' onClick={() => setOpenModal(true)}>Actualizar</Button>
+      <Button className='w-36' color='purple' onClick={() => setOpenModal(true)}>Actualizar</Button>
       <Modal
         show={openModal} size='md' popup onClose={() => {
           setOpenModal(false)

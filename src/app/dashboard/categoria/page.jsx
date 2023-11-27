@@ -1,7 +1,7 @@
 import CardSkeleton from '@/components/Cards/card-skeleton'
 import { ToastError, ToastSuccess } from '@/components/Cards/toaster'
 import CategorySection from '@/components/Category/category-section'
-import CreateCategoryButton from '@/components/Category/create-category-button'
+import CreateCategoryButton from '@/components/Buttons/create-category-button'
 import Main from '@/components/Container/main'
 import Search from '@/components/Forms/search-category'
 import Title from '@/components/Title/title'

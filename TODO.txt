@@ -1,0 +1,4 @@
+
+- en la pagina del dashboard uso el mismmo ListOfCategories y no se si deba usar el mismo y poner la logica de que solo agarre 3 examenes activos como ejemplo, nose, tengo que ver eso (DONE HALF)
+
+-Poner Try catch en los actions so i dont start writing tons of IF's

@@ -159,6 +159,19 @@ export const api = {
       }
       const data = await res.json()
       return data
+    },
+    search: async ({ token, query }) => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/examen/titulo?query=${query}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      if (!res.ok) {
+        throw new Error(`Something went wrong searching examens, status -> ${res.statusText}`)
+      }
+      const data = await res.json()
+      return data
     }
   }
 }

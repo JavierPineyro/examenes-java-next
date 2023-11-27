@@ -15,7 +15,7 @@ export default function SidebarClient() {
           <Sidebar.Item href='/dashboard/categoria' icon={HiViewBoards}>
             Categorias
           </Sidebar.Item>
-          <Sidebar.Item href='#' icon={HiInbox}>
+          <Sidebar.Item href='/dashboard/examen' icon={HiInbox}>
             Examenes
           </Sidebar.Item>
           <Sidebar.Item href='#' icon={HiUser}>

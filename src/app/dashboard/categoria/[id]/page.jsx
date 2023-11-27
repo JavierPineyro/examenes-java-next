@@ -13,12 +13,6 @@ export default async function CategoryViewPage({ params }) {
   const { token, roles } = session?.user
   const category = await api.category.getById({ token, id })
 
-  // Tengo que añadir la funcionalidad de editar, puedo hacer que los botones lo lleven a una pagina con el formulario igual que en "/create", en eliminar puede ir a una pagina donde le advierta lo que pasa si elimminas una categoria y que tenga que confirmarlo para hacerlo
-
-  // en la pagina del dashboard uso el mismmo ListOfCategories y no se si deba usar el mismo y poner la logica de que solo agarre 3 examenes activos como ejemplo, nose, tengo que ver eso (DONE HALF)
-
-  // Poner Try catch en los actions so i dont start writing tons of IF's
-
   return (
     <Main>
       <section className='flex grow-0 mb-6 pr-8'>
@@ -31,7 +25,8 @@ export default async function CategoryViewPage({ params }) {
         </div>
       </section>
       <section className='flex flex-col gap-3 grow'>
-        <h3 className='text-lg font-semibold'>Exámenes de {category.titulo}</h3>
+        <h3 className='grow text-lg font-semibold'>Exámenes de {category.titulo}</h3>
+
         <Suspense fallback={<CardSkeleton />}>
           <ListOfExamns categoryId={id} />
         </Suspense>

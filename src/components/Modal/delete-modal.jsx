@@ -9,7 +9,7 @@ export default function ModalDelete({ deleteAction }) {
 
   return (
     <>
-      <Button color='failure' onClick={() => setOpenModal(true)}>Eliminar</Button>
+      <Button className='w-36' color='failure' onClick={() => setOpenModal(true)}>Eliminar</Button>
       <Modal show={openModal} size='md' onClose={() => setOpenModal(false)} popup>
         <Modal.Header />
         <Modal.Body>
