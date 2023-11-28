@@ -25,6 +25,8 @@ export function ToastSuccess({ message }) {
 }
 
 export function ToastError({ message }) {
+  const pathname = usePathname()
+  const { replace } = useRouter()
   return (
     <div className='flex flex-col gap-4 w-full'>
       <Toast className='w-full'>
@@ -32,7 +34,10 @@ export function ToastError({ message }) {
           <HiX className='h-5 w-5' />
         </div>
         <div className='ml-3 text-sm font-normal'>{message}</div>
-        <Toast.Toggle />
+        <Toast.Toggle onDismiss={() => {
+          replace(pathname)
+        }}
+        />
       </Toast>
     </div>
   )

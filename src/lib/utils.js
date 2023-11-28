@@ -9,7 +9,7 @@ export const parseRoles = (roles) => {
 
 export const ROL = {
   ADMIN: 'ROLE_ADMIN',
-  USER: 'ROL_USER'
+  USER: 'ROLE_USER'
 }
 
 export const createCategorySchema = z.object({
@@ -32,3 +32,4 @@ export const createExamSchema = z.object({
   activo: z.string().or(z.nullable()),
   categoria: z.string()
 })
+export const updateExamSchema = createExamSchema

@@ -214,6 +214,32 @@ export const api = {
       }
 
       return isOk
+    },
+    update: async ({ token, id, titulo, descripcion, puntosMaximos, numeroDePreguntas, activo, categoria }) => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/examen/`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id,
+          titulo,
+          descripcion,
+          puntosMaximos,
+          numeroDePreguntas,
+          activo,
+          categoria: {
+            id: categoria
+          }
+        })
+      })
+
+      if (!res.ok) {
+        throw new Error(`Something went wrong updating exam by ID:${id}, status -> ${res.statusText}`)
+      }
+      const data = await res.json()
+      return data
     }
   }
 }

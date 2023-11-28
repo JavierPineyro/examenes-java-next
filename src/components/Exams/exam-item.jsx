@@ -2,15 +2,18 @@ import { HiOutlinePuzzle } from 'react-icons/hi'
 import Indicator from '@/components/Indicator/indicator'
 import { getServerSession } from 'next-auth'
 import { options } from '@/app/api/auth/[...nextauth]/options'
-import { deleteExam } from '@/lib/actions'
-import ModalDelete from '../Modal/delete-modal'
+import { deleteExam, updateExam } from '@/lib/actions'
+import ModalDelete from '@/components/Modal/delete-modal'
 import { ROL } from '@/lib/utils'
+import UpdateExamModal from '@/components/Modal/update-exam'
 
-export default async function ExamItem({ exam }) {
+export default async function ExamItem({ exam, categories }) {
   const session = await getServerSession(options)
   const token = session?.user?.token
   const role = session?.user?.roles
+
   const deleteAction = deleteExam.bind(null, { token, id: exam.id })
+  const updateAction = updateExam.bind(null, { token, id: exam.id })
 
   return (
     <div className='bg-gray-200/60 rounded-md py-4 px-3 mb-4'>
@@ -35,8 +38,7 @@ export default async function ExamItem({ exam }) {
 
         {
           role === ROL.ADMIN && <>
-            <button className='focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-1 dark:focus:ring-yellow-900'>Actualizar</button>
-
+            <UpdateExamModal updateAction={updateAction} categories={categories} exam={exam} />
             <ModalDelete deleteAction={deleteAction} />
           </>
         }

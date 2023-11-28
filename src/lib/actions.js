@@ -1,9 +1,11 @@
 'use server'
 
 import { redirect } from 'next/navigation'
+import { NextResponse } from 'next/server'
 import { revalidatePath } from 'next/cache'
 import { api } from './api'
-import { createCategorySchema, createExamSchema, createRegisterSchema, updateCategorySchema } from './utils'
+import { createCategorySchema, createExamSchema, createRegisterSchema, updateCategorySchema, updateExamSchema } from './utils'
+import { ZodError } from 'zod'
 
 // ---------- CATEGORY ----------
 
@@ -109,5 +111,60 @@ export async function deleteExam({ token, id }, formData) {
   } else {
     revalidatePath('/dashboard/examen')
     redirect('/dashboard/examen?message=El examen se ha eliminado correctamente!')
+  }
+}
+
+export async function updateExam({ token, id }, formData) {
+  let isOk
+  let isError
+  let errorMessage = ''
+  try {
+    const {
+      titulo, descripcion,
+      numeroDePreguntas, puntosMaximos,
+      activo, categoria
+    } = updateExamSchema.parse({
+      titulo: formData.get('titulo'),
+      descripcion: formData.get('descripcion'),
+      numeroDePreguntas: formData.get('numeroDePreguntas'),
+      puntosMaximos: formData.get('puntosMaximos'),
+      activo: formData.get('activo'),
+      categoria: formData.get('categoria')
+    })
+
+    const data = await api.exam.update({
+      token,
+      id,
+      titulo,
+      descripcion,
+      numeroDePreguntas,
+      puntosMaximos,
+      activo: activo === 'true',
+      categoria: Number(categoria)
+    })
+
+    if (data) {
+      isOk = true
+      isError = false
+    }
+  } catch (error) {
+    isError = true
+    isOk = false
+    if (error instanceof ZodError) {
+      errorMessage = 'Campo del formulario: ' + error.issues[0].message
+      console.error('Error de ZOD validation on update exam', error)
+    } else {
+      errorMessage = 'intentalo más tarde'
+      console.error('Error updating exam', error)
+    }
+  }
+
+  if (isOk && !isError) {
+    revalidatePath('/dashboard/examen')
+    redirect('/dashboard/examen?message=El examen se ha actualizado correctamente!')
+  }
+
+  if (!isOk && isError) {
+    redirect(`/dashboard/examen?message=No se pudo actualizar el examen, ${errorMessage}&error=true`)
   }
 }

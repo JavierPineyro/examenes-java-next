@@ -2,7 +2,8 @@
 
 import { Button, Modal } from 'flowbite-react'
 import { useRef, useState } from 'react'
-import { usePathname, useSearchParams, useRouter } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
+import { HiPlus } from 'react-icons/hi'
 
 export default function CreateExamModal({ createAction, categories = [] }) {
   const [openModal, setOpenModal] = useState(false)
@@ -10,8 +11,6 @@ export default function CreateExamModal({ createAction, categories = [] }) {
   const formRef = useRef(null)
 
   const searchParams = useSearchParams()
-  const router = useRouter()
-  const pathname = usePathname()
 
   const message = searchParams.get('message')
   const error = searchParams.get('error')
@@ -19,7 +18,10 @@ export default function CreateExamModal({ createAction, categories = [] }) {
 
   return (
     <>
-      <Button className='w-36' color='success' onClick={() => setOpenModal(true)}>Agregar</Button>
+      <Button className='w-36' color='success' onClick={() => setOpenModal(true)}>
+        <HiPlus className='mr-1 h-4 w-4' />
+        Agregar
+      </Button>
       <Modal
         show={openModal} size='md' popup onClose={() => {
           setOpenModal(false)
@@ -60,8 +62,8 @@ export default function CreateExamModal({ createAction, categories = [] }) {
                 <input min={1} type='number' required name='puntosMaximos' id='puntosMaximos' className='shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light' />
               </div>
             </div>
-            <div class='flex items-start mb-5'>
-              <div class='flex items-center h-5'>
+            <div className='flex items-start mb-5'>
+              <div className='flex items-center h-5'>
                 <input id='activo' name='activo' type='checkbox' value='true' className='w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800' />
               </div>
               <label htmlFor='activo' className='ms-2 text-sm font-medium text-gray-900 dark:text-gray-300'>Activar</label>

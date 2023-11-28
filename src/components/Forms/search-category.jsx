@@ -31,6 +31,7 @@ export default function Search({ placeholder }) {
         id='search-category'
         type='search'
         icon={HiSearch}
+        autoComplete='off'
         placeholder={placeholder}
         defaultValue={searchParams.get('query')?.toString()}
         required
