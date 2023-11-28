@@ -1,23 +1,9 @@
 'use server'
 
-import { z } from 'zod'
-
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { api } from './api'
-
-const createCategorySchema = z.object({
-  title: z.string().min(1, 'El titulo es requerido'),
-  description: z.string().min(1, 'La descripcion es requerida'),
-  token: z.string()
-})
-const updateCategorySchema = createCategorySchema.omit({ token: true })
-const createRegisterSchema = z.object({
-  username: z.string().min(1, 'El nombre de usuario es requerido'),
-  email: z.string().email('El email no es valido'),
-  password: z.string().min(8, 'La contraseña es requerida'),
-  repeatPassword: z.string().min(8, 'La contraseña es requerida')
-})
+import { createCategorySchema, createExamSchema, createRegisterSchema, updateCategorySchema } from './utils'
 
 // ---------- CATEGORY ----------
 
@@ -28,9 +14,9 @@ export async function createCategory(formData) {
     token: formData.get('token')
   })
 
-  const res = await api.category.create({ token, title, description })
+  const data = await api.category.create({ token, title, description })
 
-  if (!res || res == null) {
+  if (!data || data == null) {
     redirect('/dashboard/categoria/create?message=No se pudo crear la categoria, intentelo de nuevo mas tarde&error=true')
   } else {
     revalidatePath('/dashboard/categoria')
@@ -79,10 +65,39 @@ export async function register(formData) {
     redirect('/register?message=La contraseña debe tener al menos 8 caracteres&error=true')
   }
 
-  const res = await api.register({ username, email, password })
-  if (!res || res == null) {
+  const data = await api.register({ username, email, password })
+  if (!data || data == null) {
     redirect('/register?message=No se pudo crear el usuario, intentelo de nuevo mas tarde&error=true')
   } else {
     redirect('/api/auth/signin?message=Usuario creado correctamente')
+  }
+}
+
+// ---------- EXAM ----------
+export async function createExam({ token }, formData) {
+  const { titulo, descripcion, numeroDePreguntas, puntosMaximos, activo, categoria } = createExamSchema.parse({
+    titulo: formData.get('titulo'),
+    descripcion: formData.get('descripcion'),
+    numeroDePreguntas: formData.get('numeroDePreguntas'),
+    puntosMaximos: formData.get('puntosMaximos'),
+    activo: formData.get('activo'),
+    categoria: formData.get('categoria')
+  })
+
+  const data = await api.exam.create({
+    token,
+    titulo,
+    descripcion,
+    numeroDePreguntas,
+    puntosMaximos,
+    activo: activo === 'true',
+    categoria: Number(categoria)
+  })
+
+  if (!data || data == null) {
+    redirect('/dashboard/examen?message=No se pudo crear el examen, intentelo de nuevo mas tarde&error=true')
+  } else {
+    revalidatePath('/dashboard/examen')
+    redirect('/dashboard/examen?message=El examen se ha creado correctamente!')
   }
 }

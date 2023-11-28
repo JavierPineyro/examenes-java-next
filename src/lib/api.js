@@ -172,6 +172,32 @@ export const api = {
       }
       const data = await res.json()
       return data
+    },
+    create: async ({ token, titulo, descripcion, puntosMaximos, numeroDePreguntas, activo, categoria }) => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/examen/`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          titulo,
+          descripcion,
+          puntosMaximos,
+          numeroDePreguntas,
+          activo,
+          categoria: {
+            id: categoria
+          }
+        })
+      })
+
+      if (!res.ok) {
+        throw new Error(`Something went wrong creating exam, status -> ${res.statusText}`)
+      }
+
+      const data = await res.json()
+      return data
     }
   }
 }

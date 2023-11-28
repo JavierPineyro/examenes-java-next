@@ -2,29 +2,42 @@
 
 import { Button, Modal } from 'flowbite-react'
 import { useRef, useState } from 'react'
+import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 
-export default function CreateExamModal() {
+export default function CreateExamModal({ createAction, categories = [] }) {
   const [openModal, setOpenModal] = useState(false)
   const inputRef = useRef(null)
+  const formRef = useRef(null)
 
-  // {
-  //   "titulo": "Conceptos de POO con JAVA",
-  //   "descripcion": "Aprender a desarrollar con java",
-  //   "numeroDePreguntas": "10",
-  //   "puntosMaximos": "10",
-  //   "activo": true,
-  //   "categoria": {
-  //     "id": 2
-  //   }
-  // }
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
+
+  const message = searchParams.get('message')
+  const error = searchParams.get('error')
+  const isError = error === 'true'
 
   return (
     <>
       <Button className='w-36' color='success' onClick={() => setOpenModal(true)}>Agregar</Button>
-      <Modal show={openModal} size='md' popup onClose={() => setOpenModal(false)} initialFocus={inputRef}>
+      <Modal
+        show={openModal} size='md' popup onClose={() => {
+          setOpenModal(false)
+          // router.replace(pathname)
+        }} initialFocus={inputRef}
+      >
         <Modal.Header />
         <Modal.Body>
-          <form className='space-y-6'>
+          <form
+            ref={formRef} action={async (formData) => {
+              await createAction(formData)
+              formRef.current?.reset()
+            }} className='space-y-6'
+          >
+            <h3 className='text-md leading-tight text-center'>
+              {(message && !isError) && <span className='text-green-600'>{message}</span>}
+              {(message && isError) && <span className='text-red-600'>{message}</span>}
+            </h3>
             <div>
               <div className='mb-2 block'>
                 <label htmlFor='titulo' className='block mb-1 text-sm font-medium text-gray-900 dark:text-white'>Título</label>
@@ -49,7 +62,7 @@ export default function CreateExamModal() {
             </div>
             <div class='flex items-start mb-5'>
               <div class='flex items-center h-5'>
-                <input id='activo' name='activo' type='checkbox' value='activo' className='w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800' required />
+                <input id='activo' name='activo' type='checkbox' value='true' className='w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800' />
               </div>
               <label htmlFor='activo' className='ms-2 text-sm font-medium text-gray-900 dark:text-gray-300'>Activar</label>
             </div>
@@ -57,12 +70,11 @@ export default function CreateExamModal() {
               <label htmlFor='categoria' className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Selecciona la categoría</label>
               <select name='categoria' id='categoria' className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
 
-                <option value='eeuu'>United States</option>
-                <option>Canada</option>
-                <option>France</option>
-                <option>Germany</option>
-                <option>Canada</option>
-                <option>France</option>
+                {
+                  categories.map(category => (
+                    <option key={category.id} value={category.id}>{category.titulo}</option>
+                  ))
+                }
 
               </select>
             </div>

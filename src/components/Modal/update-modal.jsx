@@ -7,6 +7,8 @@ import { useRef, useState } from 'react'
 export default function ModalUpdate({ updateAction, category }) {
   const [openModal, setOpenModal] = useState(false)
   const inputFocusRef = useRef(null)
+  const formRef = useRef(null)
+
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
@@ -28,11 +30,16 @@ export default function ModalUpdate({ updateAction, category }) {
         <Modal.Body>
           <div className='space-y-4'>
             <h3 className='text-md leading-tight text-center'>
-              {(message && !isError) && <span className='text-green-500'>{message}</span>}
-              {(message && isError) && <span className='text-red-500'>{message}</span>}
+              {(message && !isError) && <span className='text-green-600'>{message}</span>}
+              {(message && isError) && <span className='text-red-600'>{message}</span>}
             </h3>
 
-            <form className='flex flex-col gap-2' action={updateAction}>
+            <form
+              ref={formRef} className='flex flex-col gap-2' action={async (formData) => {
+                await updateAction(formData)
+                formRef.current?.reset()
+              }}
+            >
               <div>
                 <div className='mb-2 block'>
                   <label htmlFor='titulo' className='block mb-2 text-lg font-medium text-gray-900 dark:text-white'>Título</label>
