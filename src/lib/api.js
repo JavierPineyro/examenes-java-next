@@ -198,6 +198,22 @@ export const api = {
 
       const data = await res.json()
       return data
+    },
+    delete: async ({ token, id }) => {
+      let isOk = false
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/examen/${id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      if (!res.ok) {
+        throw new Error(`Something went wrong deleting exam by ID:${id}, status -> ${res.statusText}`)
+      } else {
+        isOk = true
+      }
+
+      return isOk
     }
   }
 }

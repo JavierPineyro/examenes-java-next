@@ -101,3 +101,13 @@ export async function createExam({ token }, formData) {
     redirect('/dashboard/examen?message=El examen se ha creado correctamente!')
   }
 }
+
+export async function deleteExam({ token, id }, formData) {
+  const status = await api.exam.delete({ token, id })
+  if (status === false) {
+    redirect('/dashboard/examen?message=No se pudo eliminar el examen, intentelo de nuevo mas tarde&error=true')
+  } else {
+    revalidatePath('/dashboard/examen')
+    redirect('/dashboard/examen?message=El examen se ha eliminado correctamente!')
+  }
+}
