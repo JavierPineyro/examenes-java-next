@@ -12,7 +12,7 @@ export const options = {
         password: { label: 'Password', type: 'password', placeholder: '**********' }
       },
 
-      async authorize (credentials, req) {
+      async authorize(credentials, req) {
         const { username, password } = credentials
         const res = await api.login('login', { username, password })
 
@@ -30,12 +30,15 @@ export const options = {
     })
   ],
   callbacks: {
-    async jwt ({ token, user }) {
+    async jwt({ token, user }) {
       return { ...token, ...user }
     },
-    async session ({ session, token, user }) {
+    async session({ session, token, user }) {
       session.user = token
       return session
     }
+  },
+  pages: {
+    signIn: '/login'
   }
 }
