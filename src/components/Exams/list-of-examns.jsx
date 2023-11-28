@@ -19,15 +19,17 @@ export default async function ListOfExamns({ categoryId }) {
     <div>
       {
         exams.length > 0
-          ? exams.map((exam) => {
-            return (
-              <div key={exam.id} className='grid grid-cols-[repeat(auto-fill,_minmax(300px,_1fr))] gap-3'>
-                <Card info={exam} />
-              </div>
-            )
-          })
+          ? <ListExams exams={exams} />
           : <div className='text-lg mt-12 text-gray-500 w-full text-center'>No hay exámenes para esta categoría</div>
       }
+    </div>
+  )
+}
+
+function ListExams({ exams }) {
+  return (
+    <div className='grid grid-cols-[repeat(auto-fill,_minmax(300px,1fr))] gap-3'>
+      {exams.map((exam) => <Card key={exam.id} info={exam} />)}
     </div>
   )
 }

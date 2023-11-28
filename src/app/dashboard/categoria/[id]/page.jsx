@@ -24,8 +24,8 @@ export default async function CategoryViewPage({ params }) {
           <ActionButtons categoryId={id} token={token} role={roles} />
         </div>
       </section>
-      <section className='flex flex-col gap-3 grow'>
-        <h3 className='grow text-lg font-semibold'>Exámenes de {category.titulo}</h3>
+      <section className=''>
+        <h3 className='grow text-lg mb-3 font-semibold'>Exámenes de {category.titulo}</h3>
 
         <Suspense fallback={<CardSkeleton />}>
           <ListOfExamns categoryId={id} />

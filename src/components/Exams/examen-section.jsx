@@ -6,8 +6,8 @@ import ExamItem from './exam-item'
 
 export default async function ExamenSection({ query = '' }) {
   const session = await getServerSession(options)
-
-  const exams = await api.exam.search({ token: session?.user?.token, query })
+  const token = session?.user?.token
+  const exams = await api.exam.search({ token, query })
 
   return (
     <div className='px-4'>
