@@ -240,6 +240,19 @@ export const api = {
       }
       const data = await res.json()
       return data
+    },
+    getExamenById: async ({ token, id }) => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/examen/${id}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      if (!res.ok) {
+        throw new Error(`Something went wrong getting exam by ID:${id}, status -> ${res.statusText}`)
+      }
+      const data = await res.json()
+      return data
     }
   }
 }
