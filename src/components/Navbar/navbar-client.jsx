@@ -3,6 +3,7 @@
 import { Avatar, Dropdown, Navbar } from 'flowbite-react'
 import { useSession, signOut } from 'next-auth/react'
 import SpinnerNavbar from './navbar-spinner'
+import Link from 'next/link'
 
 export default function NavbarClient() {
   const { data: session, status } = useSession()
@@ -40,8 +41,8 @@ function AvatarDropdown({ roles, username }) {
           <span className='block text-sm'>Rol: {formatRolText(roles)}</span>
           <span className='block truncate text-sm font-medium'>{username}</span>
         </Dropdown.Header>
-        <Dropdown.Item>Dashboard</Dropdown.Item>
-        <Dropdown.Item>Settings</Dropdown.Item>
+        <Dropdown.Item as={Link} href='/dashboard'>Dashboard</Dropdown.Item>
+        <Dropdown.Item as={Link} href='/perfil'>Settings</Dropdown.Item>
         <Dropdown.Divider />
         <Dropdown.Item onClick={() => signOut({
           callbackUrl: '/'
