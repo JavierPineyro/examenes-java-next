@@ -3,14 +3,12 @@
 
 -Poner Try catch en los actions so i dont start writing tons of IF's
 
-- Hcer pagina del perfil para cambiar nombre y eso?
-- make Custom login page
-- Make admin create new admins or users
 
--Make update exams action and feature
-- make see questions of exams
-- add questions to exams
-update questions to exams
+- Hcer pagina del perfil para cambiar nombre y eso? <- Prioridad
 
-- make start and instruction pages
-- resolve questions
+- Make admin create new admins or users <- Prioridad
+
+update questions to exams <-- Lo termino mañana de mañana
+
+- make start and instruction pages <- Prioridad
+- resolve questions <- Prioridad

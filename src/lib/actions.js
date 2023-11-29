@@ -3,7 +3,7 @@
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { api } from './api'
-import { createCategorySchema, createExamSchema, createQuestionSchema, createRegisterSchema, updateCategorySchema, updateExamSchema } from './utils'
+import { createCategorySchema, createExamSchema, createQuestionSchema, createRegisterSchema, updateCategorySchema, updateExamSchema, updateQuestionSchema } from './utils'
 import { ZodError } from 'zod'
 
 // ---------- CATEGORY ----------
@@ -218,5 +218,84 @@ export async function createQuestion({ token, id }, formData) {
   }
   if (!isOk && isError) {
     redirect(`/dashboard/examen/${id}?message=No se pudo crear la pregunta, ${errorMessage}&error=true`)
+  }
+}
+
+export async function deleteQuestion({ token, id, examId }, formData) {
+  let isOk
+  let isError
+  let errorMessage = ''
+
+  try {
+    const status = await api.question.delete({ token, id, examId })
+    if (status === true) {
+      isOk = true
+      isError = false
+    }
+  } catch (error) {
+    isError = true
+    isOk = false
+    errorMessage = 'No se pudo eliminar la pregunta, intentalo mas tarde'
+  }
+
+  if (isOk && !isError) {
+    revalidatePath(`/dashboard/examen/${examId}`)
+    redirect(`/dashboard/examen/${examId}?message=La pregunta se ha eliminado correctamente!`)
+  }
+  if (!isOk && isError) {
+    redirect(`/dashboard/examen/${examId}?message=${errorMessage}&error=true`)
+  }
+}
+
+export async function updateQuestion({ token, id, examId }, formData) {
+  let isOk
+  let isError
+  let errorMessage = ''
+
+  try {
+    const {
+      contenido, opcion1, opcion2, opcion3, opcion4, respuesta
+    } = updateQuestionSchema.parse({
+      contenido: formData.get('contenido'),
+      opcion1: formData.get('opcion1'),
+      opcion2: formData.get('opcion2'),
+      opcion3: formData.get('opcion3'),
+      opcion4: formData.get('opcion4'),
+      respuesta: formData.get('respuesta')
+    })
+
+    const data = await api.question.update({
+      token,
+      id,
+      exam: examId,
+      contenido,
+      opcion1,
+      opcion2,
+      opcion3,
+      opcion4,
+      respuesta
+    })
+    if (data) {
+      isOk = true
+      isError = false
+    }
+  } catch (error) {
+    isError = true
+    isOk = false
+    if (error instanceof ZodError) {
+      errorMessage = 'Campo del formulario: ' + error.issues[0].message
+      console.error('Error de ZOD validation on update question', error)
+    } else {
+      errorMessage = 'intentalo mas tarde'
+      console.error('Error updating question', error)
+    }
+  }
+
+  if (isOk && !isError) {
+    revalidatePath(`/dashboard/examen/${examId}`)
+    redirect(`/dashboard/examen/${examId}?message=La pregunta se ha actualizado correctamente!`)
+  }
+  if (!isOk && isError) {
+    redirect(`/dashboard/examen/${examId}?message=No se pudo actualizar la pregunta ${errorMessage}&error=true`)
   }
 }

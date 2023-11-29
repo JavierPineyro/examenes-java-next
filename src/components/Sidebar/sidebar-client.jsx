@@ -2,9 +2,11 @@
 
 import { Sidebar } from 'flowbite-react'
 import { HiArrowSmRight, HiChartPie, HiInbox, HiUser, HiViewBoards } from 'react-icons/hi'
-import { signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
+import { ROL } from '@/lib/utils'
 
 export default function SidebarClient() {
+  const { data: session } = useSession()
   return (
     <Sidebar aria-label='Sidebar with logo branding example'>
       <Sidebar.Items>
@@ -18,9 +20,11 @@ export default function SidebarClient() {
           <Sidebar.Item href='/dashboard/examen' icon={HiInbox}>
             Examenes
           </Sidebar.Item>
-          <Sidebar.Item href='#' icon={HiUser}>
-            Users
-          </Sidebar.Item>
+          {
+            session?.user?.roles === ROL.ADMIN && <Sidebar.Item href='/users' icon={HiUser}>
+              Users
+            </Sidebar.Item>
+          }
         </Sidebar.ItemGroup>
         <Sidebar.ItemGroup>
           <Sidebar.Item className='cursor-pointer' onClick={() => signOut()} icon={HiArrowSmRight}>

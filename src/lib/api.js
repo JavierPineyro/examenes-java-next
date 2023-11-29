@@ -330,7 +330,7 @@ export const api = {
           opcion3,
           opcion4,
           respuesta,
-          exam: {
+          examen: {
             id: exam
           }
         })
