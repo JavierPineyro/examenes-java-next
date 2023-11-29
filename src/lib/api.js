@@ -285,7 +285,7 @@ export const api = {
           opcion3,
           opcion4,
           respuesta,
-          exam: {
+          examen: {
             id: exam
           }
         })
@@ -296,6 +296,7 @@ export const api = {
       }
 
       const data = await res.json()
+
       return data
     },
     delete: async ({ token, id }) => {

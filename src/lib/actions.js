@@ -1,10 +1,9 @@
 'use server'
 
 import { redirect } from 'next/navigation'
-import { NextResponse } from 'next/server'
 import { revalidatePath } from 'next/cache'
 import { api } from './api'
-import { createCategorySchema, createExamSchema, createRegisterSchema, updateCategorySchema, updateExamSchema } from './utils'
+import { createCategorySchema, createExamSchema, createQuestionSchema, createRegisterSchema, updateCategorySchema, updateExamSchema } from './utils'
 import { ZodError } from 'zod'
 
 // ---------- CATEGORY ----------
@@ -179,7 +178,7 @@ export async function createQuestion({ token, id }, formData) {
   try {
     const {
       contenido, opcion1, opcion2, opcion3, opcion4, respuesta
-    } = createExamSchema.pars({
+    } = createQuestionSchema.parse({
       contenido: formData.get('contenido'),
       opcion1: formData.get('opcion1'),
       opcion2: formData.get('opcion2'),
@@ -190,7 +189,7 @@ export async function createQuestion({ token, id }, formData) {
 
     const data = await api.question.create({
       token,
-      id,
+      exam: id,
       contenido,
       opcion1,
       opcion2,
@@ -209,7 +208,7 @@ export async function createQuestion({ token, id }, formData) {
       errorMessage = 'Campo del formulario: ' + error.issues[0].message
       console.error('Error de ZOD validation on create question', error)
     } else {
-      errorMessage = 'intentalo más tarde'
+      errorMessage = 'intentalo mas tarde'
       console.error('Error creating question', error)
     }
   }
