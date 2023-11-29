@@ -37,12 +37,18 @@ export default async function ExamItem({ exam, categories }) {
         <span className='flex items-center bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400'>N° de preguntas: {exam.numeroDePreguntas}</span>
 
         {
-          role === ROL.ADMIN && <>
-            <UpdateExamModal updateAction={updateAction} categories={categories} exam={exam} />
-            <ModalDelete deleteAction={deleteAction} />
-          </>
+          role === ROL.ADMIN && <ControlButtons updateAction={updateAction} categories={categories} exam={exam} deleteAction={deleteAction} />
         }
       </footer>
     </div>
+  )
+}
+
+// This component it's only used here, it was made this way so the linter stops messing around
+function ControlButtons({ updateAction, categories, exam, deleteAction }) {
+  return (
+    <><UpdateExamModal updateAction={updateAction} categories={categories} exam={exam} />
+      <ModalDelete deleteAction={deleteAction} />
+    </>
   )
 }
