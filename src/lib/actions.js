@@ -3,7 +3,7 @@
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { api } from './api'
-import { createCategorySchema, createExamSchema, createQuestionSchema, createRegisterSchema, updateCategorySchema, updateExamSchema, updateQuestionSchema } from './utils'
+import { createCategorySchema, createExamSchema, createQuestionSchema, createRegisterSchema, updateCategorySchema, updateExamSchema, updateQuestionSchema, validatePassword } from './utils'
 import { ZodError } from 'zod'
 
 // ---------- CATEGORY ----------
@@ -53,63 +53,129 @@ export async function updateCategory({ token, id }, formData) {
 
 // ---------- REGISTER ----------
 export async function register(formData) {
-  const { username, password, email, repeatPassword } = createRegisterSchema.parse({
-    username: formData.get('username'),
-    password: formData.get('password'),
-    email: formData.get('email'),
-    repeatPassword: formData.get('repeatPassword')
-  })
+  let isOk
+  let isError
+  let errorMessage = ''
+  let data = null
 
-  if (password !== repeatPassword) {
-    redirect('/register?message=Las contraseñas no coinciden&error=true')
-  } else if (password.lenght < 8) {
-    redirect('/register?message=La contraseña debe tener al menos 8 caracteres&error=true')
+  try {
+    const { username, password, email, repeatPassword } = createRegisterSchema.parse({
+      username: formData.get('username'),
+      password: formData.get('password'),
+      email: formData.get('email'),
+      repeatPassword: formData.get('repeatPassword')
+    })
+    const { isValidPassword, message } = validatePassword(password, repeatPassword)
+    if (isValidPassword) {
+      data = await api.register({ username, email, password })
+      if (data) {
+        isError = false
+        isOk = true
+      } else {
+        isError = true
+        isOk = false
+      }
+    } else {
+      isError = true
+      isOk = false
+      errorMessage = message
+    }
+  } catch (error) {
+    isError = true
+    isOk = false
+    if (error instanceof ZodError) {
+      errorMessage = error.issues[0].message
+      console.error('Error de ZOD validation on register', errorMessage)
+    } else {
+      errorMessage = 'No se pudo crear el usuario, intentelo de nuevo mas tarde'
+      console.error('Error en el registro', error)
+    }
   }
 
-  const data = await api.register({ username, email, password })
-  if (!data || data == null) {
-    redirect('/register?message=No se pudo crear el usuario, intentelo de nuevo mas tarde&error=true')
-  } else {
-    redirect('/api/auth/signin?message=Usuario creado correctamente')
+  if (isOk && !isError) {
+    redirect('/login?message=Usuario creado correctamente')
+  }
+
+  if (!isOk && isError) {
+    redirect(`/register?message=${errorMessage}&error=true`)
   }
 }
 
 // ---------- EXAM ----------
 export async function createExam({ token }, formData) {
-  const { titulo, descripcion, numeroDePreguntas, puntosMaximos, activo, categoria } = createExamSchema.parse({
-    titulo: formData.get('titulo'),
-    descripcion: formData.get('descripcion'),
-    numeroDePreguntas: formData.get('numeroDePreguntas'),
-    puntosMaximos: formData.get('puntosMaximos'),
-    activo: formData.get('activo'),
-    categoria: formData.get('categoria')
-  })
+  let isOk
+  let isError
+  let errorMessage = ''
 
-  const data = await api.exam.create({
-    token,
-    titulo,
-    descripcion,
-    numeroDePreguntas,
-    puntosMaximos,
-    activo: activo === 'true',
-    categoria: Number(categoria)
-  })
+  try {
+    const { titulo, descripcion, numeroDePreguntas, puntosMaximos, activo, categoria } = createExamSchema.parse({
+      titulo: formData.get('titulo'),
+      descripcion: formData.get('descripcion'),
+      numeroDePreguntas: formData.get('numeroDePreguntas'),
+      puntosMaximos: formData.get('puntosMaximos'),
+      activo: formData.get('activo'),
+      categoria: formData.get('categoria')
+    })
 
-  if (!data || data == null) {
-    redirect('/dashboard/examen?message=No se pudo crear el examen, intentelo de nuevo mas tarde&error=true')
-  } else {
+    const data = await api.exam.create({
+      token,
+      titulo,
+      descripcion,
+      numeroDePreguntas,
+      puntosMaximos,
+      activo: activo === 'true',
+      categoria: Number(categoria)
+    })
+
+    if (data) {
+      isOk = true
+      isError = false
+    }
+  } catch (error) {
+    isError = true
+    isOk = false
+    if (error instanceof ZodError) {
+      errorMessage = error.issues[0].message
+      console.error('Error de ZOD validation on update exam', error)
+    } else {
+      errorMessage = 'intentelo de nuevo mas tarde'
+      console.error('Error on create exam', error)
+    }
+  }
+
+  if (isOk && !isError) {
     revalidatePath('/dashboard/examen')
     redirect('/dashboard/examen?message=El examen se ha creado correctamente!')
+  }
+
+  if (!isOk && isError) {
+    redirect(`/dashboard/examen?message=No se pudo crear el examen, ${errorMessage}&error=true`)
   }
 }
 
 export async function deleteExam({ token, id }, formData) {
-  const status = await api.exam.delete({ token, id })
-  if (status === false) {
-    redirect('/dashboard/examen?message=No se pudo eliminar el examen, intentelo de nuevo mas tarde&error=true')
-  } else {
+  let isOk
+  let isError
+  let errorMessage = ''
+
+  try {
+    const status = await api.exam.delete({ token, id })
+    if (status === true) {
+      isOk = true
+      isError = false
+    }
+  } catch (error) {
+    isError = true
+    isOk = false
+    errorMessage = 'No se pudo eliminar, intentalo mas tarde'
+  }
+
+  if (isOk && !isError) {
     revalidatePath('/dashboard/examen')
     redirect('/dashboard/examen?message=El examen se ha eliminado correctamente!')
+  }
+  if (!isOk && isError) {
+    redirect(`/dashboard/examen?message=${errorMessage}&error=true`)
   }
 }
 

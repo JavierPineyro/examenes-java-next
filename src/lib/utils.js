@@ -7,6 +7,20 @@ export const parseRoles = (roles) => {
   return rolesJson.authority
 }
 
+export const validatePassword = (password, repeatPassword) => {
+  let isValidPassword = true
+  let message = ''
+  if (password !== repeatPassword) {
+    isValidPassword = false
+    message = 'Las contraseñas no coinciden'
+  }
+  if (password.length < 8) {
+    isValidPassword = false
+    message = 'La contraseña debe tener al menos 8 caracteres'
+  }
+  return { isValidPassword, message }
+}
+
 export const ROL = {
   ADMIN: 'ROLE_ADMIN',
   USER: 'ROLE_USER'
