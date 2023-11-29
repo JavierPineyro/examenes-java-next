@@ -254,5 +254,105 @@ export const api = {
       const data = await res.json()
       return data
     }
+  },
+  question: {
+    getQuestionsOfExam: async ({ token, id }) => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/pregunta/examen/${id}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      if (!res.ok) {
+        throw new Error(`Something went wrong getting questions of exam by ID:${id}, status -> ${res.statusText}`)
+      }
+      const data = await res.json()
+      return data
+    },
+    create: async (
+      { token, contenido, opcion1, opcion2, opcion3, opcion4, respuesta, exam }
+    ) => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/pregunta/`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          contenido,
+          opcion1,
+          opcion2,
+          opcion3,
+          opcion4,
+          respuesta,
+          exam: {
+            id: exam
+          }
+        })
+      })
+
+      if (!res.ok) {
+        throw new Error(`Something went wrong creating question, status -> ${res.statusText}`)
+      }
+
+      const data = await res.json()
+      return data
+    },
+    delete: async ({ token, id }) => {
+      let isOk = false
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/pregunta/${id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      if (!res.ok) {
+        throw new Error(`Something went wrong deleting question by ID:${id}, status -> ${res.statusText}`)
+      } else {
+        isOk = true
+      }
+
+      return isOk
+    },
+    update: async ({ token, id, contenido, opcion1, opcion2, opcion3, opcion4, respuesta, exam }) => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/pregunta/`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id,
+          contenido,
+          opcion1,
+          opcion2,
+          opcion3,
+          opcion4,
+          respuesta,
+          exam: {
+            id: exam
+          }
+        })
+      })
+
+      if (!res.ok) {
+        throw new Error(`Something went wrong updating question by ID:${id}, status -> ${res.statusText}`)
+      }
+      const data = await res.json()
+      return data
+    },
+    getQuestionById: async ({ token, id }) => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/pregunta/${id}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      if (!res.ok) {
+        throw new Error(`Something went wrong getting question by ID:${id}, status -> ${res.statusText}`)
+      }
+      const data = await res.json()
+      return data
+    }
   }
 }

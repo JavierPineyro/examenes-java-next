@@ -12,6 +12,7 @@ export const ROL = {
   USER: 'ROLE_USER'
 }
 
+// category
 export const createCategorySchema = z.object({
   title: z.string().min(1, 'El titulo es requerido'),
   description: z.string().min(1, 'La descripcion es requerida'),
@@ -24,6 +25,8 @@ export const createRegisterSchema = z.object({
   password: z.string().min(8, 'La contraseña es requerida'),
   repeatPassword: z.string().min(8, 'La contraseña es requerida')
 })
+
+// exam
 export const createExamSchema = z.object({
   titulo: z.string().min(1, 'El titulo es requerido'),
   descripcion: z.string().min(1, 'La descripcion es requerida'),
@@ -33,3 +36,14 @@ export const createExamSchema = z.object({
   categoria: z.string()
 })
 export const updateExamSchema = createExamSchema
+
+// question
+export const createQuestionSchema = z.object({
+  contenido: z.string().min(1, 'El contenido es requerido'),
+  respuesta: z.string().min(1, 'La respuesta es requerida'),
+  opcion1: z.string().min(1, 'La opcion 1 es requerida'),
+  opcion2: z.string().min(1, 'La opcion 2 es requerida'),
+  opcion3: z.string().min(1, 'La opcion 3 es requerida'),
+  opcion4: z.string().min(1, 'La opcion 4 es requerida')
+})
+export const updateQuestionSchema = createQuestionSchema

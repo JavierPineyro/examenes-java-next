@@ -168,3 +168,56 @@ export async function updateExam({ token, id }, formData) {
     redirect(`/dashboard/examen?message=No se pudo actualizar el examen, ${errorMessage}&error=true`)
   }
 }
+
+// ---------- QUESTION ----------
+
+export async function createQuestion({ token, id }, formData) {
+  let isOk
+  let isError
+  let errorMessage = ''
+
+  try {
+    const {
+      contenido, opcion1, opcion2, opcion3, opcion4, respuesta
+    } = createExamSchema.pars({
+      contenido: formData.get('contenido'),
+      opcion1: formData.get('opcion1'),
+      opcion2: formData.get('opcion2'),
+      opcion3: formData.get('opcion3'),
+      opcion4: formData.get('opcion4'),
+      respuesta: formData.get('respuesta')
+    })
+
+    const data = await api.question.create({
+      token,
+      id,
+      contenido,
+      opcion1,
+      opcion2,
+      opcion3,
+      opcion4,
+      respuesta
+    })
+    if (data) {
+      isOk = true
+      isError = false
+    }
+  } catch (error) {
+    isError = true
+    isOk = false
+    if (error instanceof ZodError) {
+      errorMessage = 'Campo del formulario: ' + error.issues[0].message
+      console.error('Error de ZOD validation on create question', error)
+    } else {
+      errorMessage = 'intentalo más tarde'
+      console.error('Error creating question', error)
+    }
+  }
+  if (isOk && !isError) {
+    revalidatePath(`/dashboard/examen/${id}`)
+    redirect(`/dashboard/examen/${id}?message=La pregunta se ha creado correctamente!`)
+  }
+  if (!isOk && isError) {
+    redirect(`/dashboard/examen/${id}?message=No se pudo crear la pregunta, ${errorMessage}&error=true`)
+  }
+}
