@@ -7,6 +7,55 @@ export const parseRoles = (roles) => {
   return rolesJson.authority
 }
 
+export const questionsMock = [
+  {
+    id: 1,
+    contenido: 'Pregunta 1',
+    opcion1: 'Opcion 1',
+    opcion2: 'Opcion 2',
+    opcion3: 'Opcion 3',
+    opcion4: 'Opcion 4',
+    respuesta: 'Opcion 2',
+    respuestaDada: null,
+    examen: {
+      id: 1,
+      titulo: 'Examen 1',
+      descripcion: 'Descripcion 1',
+      numeroDePreguntas: 2,
+      puntosMaximos: 10,
+      activo: true,
+      categoria: {
+        id: 1,
+        nombre: 'Categoria 1',
+        descripcion: 'Descripcion 1'
+      }
+    }
+  },
+  {
+    id: 1,
+    contenido: 'Pregunta2',
+    opcion1: 'Opcion 1 2',
+    opcion2: 'Opcion 2 2',
+    opcion3: 'Opcion 3 2',
+    opcion4: 'Opcion 4 2',
+    respuesta: 'Opcion 2 2',
+    respuestaDada: null,
+    examen: {
+      id: 1,
+      titulo: 'Examen 1',
+      descripcion: 'Descripcion 1',
+      numeroDePreguntas: 2,
+      puntosMaximos: 10,
+      activo: true,
+      categoria: {
+        id: 1,
+        nombre: 'Categoria 1',
+        descripcion: 'Descripcion 1'
+      }
+    }
+  }
+]
+
 export const validatePassword = (password, repeatPassword) => {
   let isValidPassword = true
   let message = ''

@@ -1,6 +1,5 @@
 
 
--Poner Try catch en los actions so i dont start writing tons of IF's
 
 - Hcer pagina del perfil para ver nombre y eso? <- Prioridad
 

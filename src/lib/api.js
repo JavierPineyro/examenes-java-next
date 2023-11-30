@@ -234,7 +234,7 @@ export const api = {
           }
         })
       })
-
+      console.log('ress', res)
       if (!res.ok) {
         throw new Error(`Something went wrong updating exam by ID:${id}, status -> ${res.statusText}`)
       }
@@ -250,6 +250,21 @@ export const api = {
       })
       if (!res.ok) {
         throw new Error(`Something went wrong getting exam by ID:${id}, status -> ${res.statusText}`)
+      }
+      const data = await res.json()
+      return data
+    },
+    resolve: async ({ token, questions }) => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/pregunta/evaluar-examen`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(questions)
+      })
+
+      if (!res.ok) {
+        throw new Error(`Hubo un error resolviendo el examen, status -> ${res.statusText}`)
       }
       const data = await res.json()
       return data

@@ -9,27 +9,30 @@ export default async function ListOfExamns({ categoryId }) {
   const { token, roles } = session?.user
   let exams = []
 
+  const data = await api.exam.getExamnsByCategoryId({ token, id: categoryId })
+
+  if (roles === ROL.USER) {
+    exams = data.filter(exam => exam.activo === true)
+  }
   if (roles === ROL.ADMIN) {
-    exams = await api.exam.getExamnsByCategoryId({ token, id: categoryId })
-  } else {
-    exams = await api.exam.getExamnsByCategoryIdAndActive({ token, id: categoryId })
+    exams = data
   }
 
   return (
     <div>
       {
         exams.length > 0
-          ? <ListExams exams={exams} />
+          ? <ListExams roles={roles} exams={exams} />
           : <div className='text-lg mt-12 text-gray-500 w-full text-center'>No hay exámenes para esta categoría</div>
       }
     </div>
   )
 }
 
-function ListExams({ exams }) {
+function ListExams({ exams, roles }) {
   return (
     <div className='grid grid-cols-[repeat(auto-fill,_minmax(300px,1fr))] gap-3'>
-      {exams.map((exam) => <Card key={exam.id} info={exam} />)}
+      {exams.map((exam) => <Card roles={roles} key={exam.id} info={exam} />)}
     </div>
   )
 }

@@ -40,7 +40,7 @@ export default async function InstructionPage({ params }) {
         <li className='ml-2'>Cuando haya respondido todas las preguntas, envie el formulario haciendo click en el botón de "Finalizar"</li>
       </ul>
       <div className='w-full flex justify-start'>
-        <Link className='bg-blue-600 text-white px-3 py-2 rounded-md w-36 hover:bg-blue-800 transition-colors text-center font-medium' href={`/dashboard/empezar/${id}`}>Empezar</Link>
+        <Link className='bg-blue-600 text-white px-3 py-2 rounded-md w-36 hover:bg-blue-800 transition-colors text-center font-medium' href={`/empezar/${id}`}>Empezar</Link>
       </div>
     </Main>
   )

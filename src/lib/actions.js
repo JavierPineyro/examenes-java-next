@@ -426,3 +426,43 @@ export async function updateQuestion({ token, id, examId }, formData) {
     redirect(`/dashboard/examen/${examId}?message=No se pudo actualizar la pregunta ${errorMessage}&error=true`)
   }
 }
+
+// Resolve quiz
+export async function resolveAction({ token, examId }, formData) {
+  let isOk
+  let isError
+  let errorMessage = ''
+  let questions = []
+  let data = null
+
+  try {
+    questions = await api.question.getQuestionsOfExam({ token, id: examId })
+    for (const [id, value] of formData.entries()) {
+      const index = questions.findIndex(question => question.id === Number(id))
+      if (index !== -1) {
+        questions[index].respuestaDada = value
+      }
+    }
+
+    data = await api.exam.resolve({ token, questions })
+
+    if (data) {
+      isOk = true
+      isError = false
+    }
+  } catch (error) {
+    isError = true
+    isOk = false
+    errorMessage = 'No se pudo resolver el examen, intentalo mas tarde'
+    console.error('Error on resolve exam', error)
+  }
+
+  if (isOk && !isError) {
+    const { respuestasCorrectas, puntosMaximos } = data
+    redirect(`/dashboard/resultados?message=Examen enviado!&respuestasCorrectas=${respuestasCorrectas}&puntos=${puntosMaximos}`)
+  }
+
+  if (!isOk && isError) {
+    redirect(`/dashboard/resultados?message=${errorMessage}&error=true`)
+  }
+}
