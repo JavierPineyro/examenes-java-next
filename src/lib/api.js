@@ -279,7 +279,7 @@ export const api = {
         }
       })
       if (!res.ok) {
-        throw new Error(`Something went wrong getting questions of exam by ID:${id}, status -> ${res.statusText}`)
+        throw new Error(`Ocurrio un error, uso el free tier sorry, api -> questions of exam by ID:${id}, status -> ${res.statusText}`)
       }
       const data = await res.json()
       return data

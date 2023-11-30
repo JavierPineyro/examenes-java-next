@@ -437,6 +437,7 @@ export async function resolveAction({ token, examId }, formData) {
 
   try {
     questions = await api.question.getQuestionsOfExam({ token, id: examId })
+    console.log('--------------', questions[0].examen.categoria.titulo)
     for (const [id, value] of formData.entries()) {
       const index = questions.findIndex(question => question.id === Number(id))
       if (index !== -1) {
