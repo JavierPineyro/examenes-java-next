@@ -89,6 +89,14 @@ export const createRegisterSchema = z.object({
   repeatPassword: z.string().min(8, 'La contraseña es requerida')
 })
 
+export const createUserSchema = z.object({
+  username: z.string().min(1, 'El nombre de usuario es requerido'),
+  email: z.string().email('El email no es valido'),
+  password: z.string().min(8, 'La contraseña es requerida'),
+  repeatPassword: z.string().min(8, 'La contraseña es requerida'),
+  role: z.string().min(1, 'El role es requerido')
+})
+
 // exam
 export const createExamSchema = z.object({
   titulo: z.string().min(1, 'El titulo es requerido'),

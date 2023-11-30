@@ -1,9 +1,0 @@
-
-
-
-- Hcer pagina del perfil para ver nombre y eso? <- Prioridad
-
-- Make admin create new admins or users <- Prioridad
-
-- make start and instruction pages <- Prioridad
-- resolve questions <- Prioridad

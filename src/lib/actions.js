@@ -3,7 +3,7 @@
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { api } from './api'
-import { createCategorySchema, createExamSchema, createQuestionSchema, createRegisterSchema, updateCategorySchema, updateExamSchema, updateQuestionSchema, validatePassword } from './utils'
+import { createCategorySchema, createExamSchema, createQuestionSchema, createRegisterSchema, createUserSchema, updateCategorySchema, updateExamSchema, updateQuestionSchema, validatePassword } from './utils'
 import { ZodError } from 'zod'
 
 // ---------- CATEGORY ----------
@@ -159,6 +159,56 @@ export async function register(formData) {
 
   if (!isOk && isError) {
     redirect(`/register?message=${errorMessage}&error=true`)
+  }
+}
+
+export async function registerAsAdmin(formData) {
+  let isOk
+  let isError
+  let errorMessage = ''
+  let data = null
+
+  try {
+    const { username, password, email, repeatPassword, role } = createUserSchema.parse({
+      username: formData.get('username'),
+      password: formData.get('password'),
+      email: formData.get('email'),
+      repeatPassword: formData.get('repeatPassword'),
+      role: formData.get('role')
+    })
+    const { isValidPassword, message } = validatePassword(password, repeatPassword)
+    if (isValidPassword) {
+      data = await api.admin.register({ username, email, password, role })
+      if (data) {
+        isError = false
+        isOk = true
+      } else {
+        isError = true
+        isOk = false
+      }
+    } else {
+      isError = true
+      isOk = false
+      errorMessage = message
+    }
+  } catch (error) {
+    isError = true
+    isOk = false
+    if (error instanceof ZodError) {
+      errorMessage = error.issues[0].message
+      console.error('Error de ZOD validation on register', errorMessage)
+    } else {
+      errorMessage = 'No se pudo crear el usuario, intentelo de nuevo mas tarde'
+      console.error('Error en el registro', error)
+    }
+  }
+
+  if (isOk && !isError) {
+    redirect(`/users?message=Usuario ${data?.username} creado correctamente con contraseña`)
+  }
+
+  if (!isOk && isError) {
+    redirect(`/users?message=${errorMessage}&error=true`)
   }
 }
 

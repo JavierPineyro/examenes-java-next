@@ -372,5 +372,35 @@ export const api = {
       const data = await res.json()
       return data
     }
+  },
+  admin: {
+    register: async ({ username, email, password, role }) => {
+      let roles
+      if (role === 'admin') {
+        roles = ['ADMIN']
+      }
+      if (role === 'user') {
+        roles = ['USER']
+      }
+
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/createUser`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username,
+          email,
+          password,
+          roles
+        })
+      })
+
+      if (!res.ok) {
+        throw new Error(`Something went wrong in /register user, status -> ${res.statusText}`)
+      }
+      const data = await res.json()
+      return data
+    }
   }
 }
