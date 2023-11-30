@@ -30,7 +30,7 @@ export default async function ExamItem({ exam, categories }) {
         {
           role === ROL.ADMIN
             ? <a href={`/dashboard/examen/${exam.id}`} className='text-white flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'>Preguntas</a>
-            : <a href={`/dashboard/examen/instrucciones/${exam.id}`} className='text-white flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'>Empezar</a>
+            : <a href={`/dashboard/instrucciones/${exam.id}`} className='text-white flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'>Empezar</a>
         }
 
         <span className='flex items-center bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400'>Puntos maximos: {exam.puntosMaximos}</span>
