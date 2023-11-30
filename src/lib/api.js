@@ -276,7 +276,8 @@ export const api = {
       const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/pregunta/examen/${id}`, {
         method: 'GET',
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
         }
       })
       if (!res.ok) {
