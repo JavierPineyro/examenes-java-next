@@ -8,13 +8,23 @@ import { getServerSession } from 'next-auth'
 export default async function ResultsPage({ searchParams }) {
   const respuestasCorrectas = searchParams.respuestasCorrectas || ''
   const puntos = searchParams.puntos || ''
-  const message = searchParams.message || ''
+  let message = searchParams.message || ''
   const idExam = searchParams.id || ''
   const id = Number(idExam)
 
   const session = await getServerSession(options)
   const token = session?.user?.token
-  const questions = await api.question.getQuestionsOfExam({ token, id })
+  let questions = []
+  try {
+    if (id) {
+      questions = await api.question.getQuestionsOfExam({ token, id })
+    } else {
+      message = 'No se pudo obtener el examen, intentelo mas tarde'
+    }
+  } catch (error) {
+    console.error(error)
+    message = 'No se pudo obtener las preguntas del examen, intentelo mas tarde'
+  }
 
   return (
     <Main>
