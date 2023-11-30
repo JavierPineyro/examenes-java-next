@@ -2,7 +2,7 @@
 
 import { Button, Modal } from 'flowbite-react'
 import { useRef, useState } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { HiPlus } from 'react-icons/hi'
 
 export default function CreateExamModal({ createAction, categories = [] }) {
@@ -11,6 +11,8 @@ export default function CreateExamModal({ createAction, categories = [] }) {
   const formRef = useRef(null)
 
   const searchParams = useSearchParams()
+  const pathname = usePathname()
+  const router = useRouter()
 
   const message = searchParams.get('message')
   const error = searchParams.get('error')
@@ -25,7 +27,7 @@ export default function CreateExamModal({ createAction, categories = [] }) {
       <Modal
         show={openModal} size='md' popup onClose={() => {
           setOpenModal(false)
-          // router.replace(pathname)
+          router.replace(pathname)
         }} initialFocus={inputRef}
       >
         <Modal.Header />

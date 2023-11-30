@@ -2,7 +2,7 @@
 
 import { Button, Modal } from 'flowbite-react'
 import { useMemo, useRef, useState } from 'react'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { HiPlus } from 'react-icons/hi'
 
 const initiaState = {
@@ -21,8 +21,6 @@ export default function CreateQuestionModal({ createAction }) {
   const formRef = useRef(null)
 
   const searchParams = useSearchParams()
-  const router = useRouter()
-  const pathname = usePathname()
 
   const message = searchParams.get('message')
   const error = searchParams.get('error')
@@ -45,7 +43,6 @@ export default function CreateQuestionModal({ createAction }) {
       <Modal
         show={openModal} size='md' popup onClose={() => {
           setOpenModal(false)
-          router.replace(pathname)
         }} initialFocus={inputRef}
       >
         <Modal.Header />

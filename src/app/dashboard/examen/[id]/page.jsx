@@ -12,17 +12,32 @@ export default async function ExamenDetailPage({ params, searchParams }) {
   const session = await getServerSession(options)
   const { id } = params
   const token = session?.user?.token
+  let isErrorApi = false
+  let messageErrorApi = ''
+  let exam = {}
+  let questions = []
 
-  const exam = await api.exam.getExamenById({ token, id })
-  const questions = await api.question.getQuestionsOfExam({ token, id })
+  try {
+    exam = await api.exam.getExamenById({ token, id })
+    questions = await api.question.getQuestionsOfExam({ token, id })
+  } catch (error) {
+    console.log(error)
+    messageErrorApi = error.message || 'No se pudo crear la pregunta'
+    isErrorApi = true
+  }
 
   const createAction = createQuestion.bind(null, { token, id: exam.id })
 
   return (
     <Main className='w-full p-2'>
+      {
+        isErrorApi && <NoResults>{messageErrorApi}</NoResults>
+      }
       <div className='flex justify-between px-4'>
         <Title>{exam.titulo}</Title>
-        <CreateQuestionModal createAction={createAction} />
+        {
+          questions?.length < Number(exam.numeroDePreguntas) && <CreateQuestionModal createAction={createAction} />
+        }
       </div>
       <section className='p-4 flex flex-col gap-6'>
         {
