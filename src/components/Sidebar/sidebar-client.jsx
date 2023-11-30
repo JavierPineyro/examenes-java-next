@@ -21,9 +21,7 @@ export default function SidebarClient() {
             Examenes
           </Sidebar.Item>
           {
-            session?.user?.roles === ROL.ADMIN && <Sidebar.Item href='/users' icon={HiUser}>
-              Users
-            </Sidebar.Item>
+            session?.user?.roles === ROL.ADMIN && <SideBarWithAdmin />
           }
         </Sidebar.ItemGroup>
         <Sidebar.ItemGroup>
@@ -33,5 +31,13 @@ export default function SidebarClient() {
         </Sidebar.ItemGroup>
       </Sidebar.Items>
     </Sidebar>
+  )
+}
+
+function SideBarWithAdmin() {
+  return (
+    <Sidebar.Item href='/users' icon={HiUser}>
+      Users
+    </Sidebar.Item>
   )
 }

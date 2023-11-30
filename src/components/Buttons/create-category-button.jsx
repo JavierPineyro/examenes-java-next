@@ -14,17 +14,23 @@ export default function CreateCategoryButton() {
     <>
       {
         session?.user?.roles === ROL.ADMIN
-          ? (<Button
-            className='hover:bg-green-500 transition-colors  active:bg-green-800'
-            href={`${pathname}/create`}
-            as={Link}
-            color='success'
-          >
-            <HiPlus className='mr-1 h-4 w-4' />
-            Crear categoria
-          </Button>)
+          ? <Btn pathname={pathname} />
           : null
       }
     </>
+  )
+}
+
+function Btn({ pathname }) {
+  return (
+    <Button
+      className='hover:bg-green-500 transition-colors  active:bg-green-800'
+      href={`${pathname}/create`}
+      as={Link}
+      color='success'
+    >
+      <HiPlus className='mr-1 h-4 w-4' />
+      Crear categoria
+    </Button>
   )
 }
