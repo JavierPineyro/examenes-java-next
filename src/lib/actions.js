@@ -459,7 +459,7 @@ export async function resolveAction({ token, examId }, formData) {
 
   if (isOk && !isError) {
     const { respuestasCorrectas, puntosMaximos } = data
-    redirect(`/dashboard/resultados?message=Examen enviado!&respuestasCorrectas=${respuestasCorrectas}&puntos=${puntosMaximos}&exam=${1}`)
+    redirect(`/dashboard/resultados?message=Examen enviado!&respuestasCorrectas=${respuestasCorrectas}&puntos=${puntosMaximos}&exam=${examId}`)
   }
 
   if (!isOk && isError) {
