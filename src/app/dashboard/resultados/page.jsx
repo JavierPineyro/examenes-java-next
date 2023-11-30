@@ -9,7 +9,7 @@ export default async function ResultsPage({ searchParams }) {
   const respuestasCorrectas = searchParams.respuestasCorrectas || ''
   const puntos = searchParams.puntos || ''
   let message = searchParams.message || ''
-  const idExam = searchParams.id || ''
+  const idExam = searchParams.exam || ''
   const id = Number(idExam)
 
   const session = await getServerSession(options)
