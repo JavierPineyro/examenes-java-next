@@ -8,8 +8,8 @@ import Main from '@/components/Container/main'
 export default function DashboardPage() {
   return (
     <Main className='flex flex-col gap-4'>
-      <p>¿Qué puedes hacer aquí?</p>
-      <ul>
+      <Title>¿Qué puedes hacer aquí?</Title>
+      <ul className='mb-4 list-disc pl-10'>
         <li>Ver las categorías</li>
         <li>Ver los distintos exámenes</li>
         <li>Buscar los exámenes con el buscador</li>
