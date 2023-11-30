@@ -255,13 +255,6 @@ export const api = {
       return data
     },
     resolve: async ({ token, questions }) => {
-      const questionsWithoutCategoria = questions.map(question => {
-        const { examen, ...rest } = question
-        const { categoria, ...restExamen } = examen
-        return { ...rest, ...restExamen }
-      })
-
-      console.log('Sin categoria', questionsWithoutCategoria)
       const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/pregunta/evaluar-examen`, {
         method: 'POST',
         headers: {
