@@ -9,45 +9,106 @@ import { ZodError } from 'zod'
 // ---------- CATEGORY ----------
 
 export async function createCategory(formData) {
-  const { title, description, token } = createCategorySchema.parse({
-    title: formData.get('titulo'),
-    description: formData.get('descripcion'),
-    token: formData.get('token')
-  })
+  let isOk
+  let isError
+  let errorMessage = ''
+  try {
+    const { title, description, token } = createCategorySchema.parse({
+      title: formData.get('titulo'),
+      description: formData.get('descripcion'),
+      token: formData.get('token')
+    })
+    const data = await api.category.create({ token, title, description })
+    if (data) {
+      isError = false
+      isOk = true
+    }
+  } catch (error) {
+    isError = true
+    isOk = false
 
-  const data = await api.category.create({ token, title, description })
+    if (error instanceof ZodError) {
+      errorMessage = 'Campo del formulario: ' + error.issues[0].message
+      console.error('Error de ZOD validation on create category', error)
+    } else {
+      errorMessage = 'intentalo más tarde'
+      console.error('Error on create category', error)
+    }
+  }
 
-  if (!data || data == null) {
-    redirect('/dashboard/categoria/create?message=No se pudo crear la categoria, intentelo de nuevo mas tarde&error=true')
-  } else {
+  if (isOk && !isError) {
     revalidatePath('/dashboard/categoria')
-    redirect(`/dashboard/categoria?message=La categoria ${title} se ha creado correctamente`)
+    redirect('/dashboard/categoria?message=La categoria se ha creado correctamente')
+  }
+
+  if (!isOk && isError) {
+    redirect(`/dashboard/categoria/create?message=No se pudo crear la categoria,${errorMessage}&error=true`)
   }
 }
 
 export async function deleteCategory({ token, id }, formData) {
-  // usar try catch aca asi no tengo que usar el IF y lo hago en el catch
-  const status = await api.category.delete({ token, id })
-  if (status === false) {
-    redirect(`/dashboard/categoria/${id}?message=No se pudo eliminar la categoria, intentelo de nuevo mas tarde&error=true`)
-  } else {
+  let isOk
+  let isError
+  let errorMessage = ''
+  try {
+    const status = await api.category.delete({ token, id })
+    if (status === true) {
+      isOk = true
+      isError = false
+    }
+  } catch (error) {
+    isError = true
+    isOk = false
+    errorMessage = 'No se pudo eliminar, intentalo mas tarde'
+  }
+
+  if (isOk && !isError) {
     revalidatePath('/dashboard/categoria')
-    redirect('/dashboard/categoria?message=Elemento fue eliminado correctamente')
+    redirect('/dashboard/categoria?message=La categoria fue eliminada correctamente')
+  }
+  if (!isOk && isError) {
+    redirect(`/dashboard/categoria/${id}?message=${errorMessage}&error=true`)
   }
 }
 
 export async function updateCategory({ token, id }, formData) {
-  const { title, description } = updateCategorySchema.parse({
-    title: formData.get('titulo'),
-    description: formData.get('descripcion')
-  })
+  let isError
+  let isOk
+  let errorMessage = ''
 
-  const data = await api.category.update({ token, id, title, description })
-  if (!data) {
-    redirect(`/dashboard/categoria/${id}?message=No se pudo actualizar la categoria, intentelo de nuevo mas tarde&error=true`)
-  } else {
+  try {
+    const { title, description } = updateCategorySchema.parse({
+      title: formData.get('titulo'),
+      description: formData.get('descripcion')
+    })
+    const data = await api.category.update({ token, id, title, description })
+    if (data) {
+      isError = false
+      isOk = true
+    } else {
+      isError = true
+      isOk = false
+    }
+  } catch (error) {
+    isError = true
+    isOk = false
+
+    if (error instanceof ZodError) {
+      errorMessage = 'Campo del formulario: ' + error.issues[0].message
+      console.error('Error de ZOD validation on update category', error)
+    } else {
+      errorMessage = 'intentalo más tarde'
+      console.error('Error updating category', error)
+    }
+  }
+
+  if (isOk && !isError) {
     revalidatePath('/dashboard/categoria')
-    redirect(`/dashboard/categoria/${id}?message=La categoria ${title} se ha actualizado correctamente`)
+    redirect(`/dashboard/categoria/${id}?message=La categoria se ha actualizado correctamente`)
+  }
+
+  if (!isOk && isError) {
+    redirect(`/dashboard/categoria/${id}?message=No se pudo actualizar la categoria,${errorMessage}&error=true`)
   }
 }
 
